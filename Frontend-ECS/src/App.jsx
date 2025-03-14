@@ -11,7 +11,7 @@ import Signup from './pages/Signup.jsx';
 import ResourceHub from './pages/Resource Hub/ResourceHub.jsx';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
-import Dashboard from './pages/Dashboard/Dashboard.jsx';
+import Dashboard from './pages/Dashboard/dashboard.jsx';
 import PhotoGallery from './pages/Gallerydedicated/Photogallery.jsx';
 import Dehleez from './pages/Gallerydedicated/Dehleez.jsx';
 import Orientation from './pages/Gallerydedicated/Orientation.jsx';
