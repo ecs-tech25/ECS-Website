@@ -1,7 +1,7 @@
 const cardsData = [
     { title: "Ananya Chetia", description: "Vice-President", imageUrl: "https://i.postimg.cc/Bb1vMsF3/ananya.png" },
-    { title: "Aryadeep Gogoi", description: "President", imageUrl: "https://res.cloudinary.com/nikks/image/upload/v1736851298/aryadeep_o2itqq.png" },
-    { title: "Chetan Singh Verma", description: "General Secretary", imageUrl: "https://res.cloudinary.com/nikks/image/upload/v1736850672/chetan_xfsgyz.png" },
+    { title: "Aryadeep Gogoi", description: "President", imageUrl: "https://i.postimg.cc/qMsvYDmm/IMG-20231110-WA0085-jvzm0j-removebg-preview.png" },
+    { title: "Chetan Singh Verma", description: "General Secretary", imageUrl: "https://i.postimg.cc/xCnkpDQ3/Whats-App-Image-2025-01-15-at-22-40-38-c5b5c76c-removebg-preview.png" },
     { title: "Tripti Golcha", description: "Literary and PR Head", imageUrl: "https://i.postimg.cc/Y04vZYJJ/tripti.png" },
     { title: "Parismita Malakar", description: "Media and Graphics Design Head", imageUrl: "https://i.postimg.cc/SRj94wz1/parismita.png" },
     { title: "Pragyan Das", description: "Technical Head", imageUrl: "https://i.postimg.cc/W1ZMhLYQ/pragyan.png" },
@@ -12,6 +12,7 @@ const cardsData = [
     { title: "Ravi Nayan", description: "Junior Executive", imageUrl: "https://i.postimg.cc/RVM87Gxs/ravi.png" },
     { title: "Aditya Sharma", description: "Junior Executive", imageUrl: "https://i.postimg.cc/JhGCbxZV/aditya.png" },
     { title: "Dubari Kalita", description: "Junior Executive", imageUrl: "https://i.postimg.cc/gkWpfvF8/dubari.png" },
+    { title: "Tejesh Pandey", description: "Junior Executive", imageUrl: "https://i.postimg.cc/W4XjVQrn/Whats-App-Image-2025-03-16-at-23-33-48-a0f8e9d1-removebg-preview.png" },
     { title: "Koustubh Mishra", description: "Literary & PR Member", imageUrl: "https://i.postimg.cc/GmMVXDxF/koustubh.png" },
     { title: "Namrata Nayak", description: " Literary & PR Member", imageUrl: "https://i.postimg.cc/QVL2sZyj/namrata.png" },
     { title: "Bhabhana Das", description: "Literary & PR Member", imageUrl: "https://i.postimg.cc/pTrbJZjM/bhabhana.png" },

@@ -1,26 +1,25 @@
-
-
-import mongoose,{Schema} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
-const eventSchema= new Schema({
-    Events:{
-        name:String,
-        type:String,
-        participant:{
-            name:String,
-            scholar_ID:Number,
-            email:String,
-            mobile_No:Number,
-            teamName:{
-             type:String,
-             required:false,
-            },
-            teamMembers:[]
-        }
-    },
-})
+const participantSchema = new Schema({
+    name: { type: String, required: true },
+    scholar_ID: { type: String, required: true }, 
+    email: { type: String, required: true },
+    mobile_No: { type: String, required: true },
+    teamName: { type: String, required: false },
+    teamMembers: [{ 
+        name: String, 
+        scholar_ID: String, 
+        email: String 
+    }]
+}, { timestamps: true });
 
-eventSchema.plugin(mongooseAggregatePaginate)
+const eventSchema = new Schema({
+    name: { type: String, required: true },
+    type: { type: String, required: true },
+    participants: [participantSchema] 
+}, { timestamps: true });
 
-export const Event=mongoose.model("Event",eventSchema)
+eventSchema.plugin(mongooseAggregatePaginate);
+
+export const Event = mongoose.model("Event", eventSchema);

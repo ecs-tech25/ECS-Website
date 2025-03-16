@@ -15,7 +15,7 @@ const AboutUs = () => {
           </p>
         </div>
 
-        <img src="https://i.postimg.cc/zvgpvc7s/ARY-0090.jpg" alt="" className="polygon" />
+        <img src="https://i.postimg.cc/jjBydkyp/Screenshot-2025-03-16-224410-removebg-preview.png" alt="" className="polygon" />
       </div>
 
       {/* Decorative Lines */}
