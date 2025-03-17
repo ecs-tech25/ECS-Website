@@ -2,7 +2,7 @@ import React from "react";
 import Card from "../cards/Card";
 import "./developers.css";
 
-import cardsData from "./developerData"; // Import the cardsData array
+import cardsData from "./developerData.js"; // Import the cardsData array
 
 export default function Developers() {
   const seniorDeveloper = cardsData[0]; // Assuming the first card is the senior developer

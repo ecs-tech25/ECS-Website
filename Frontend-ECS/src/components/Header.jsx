@@ -48,16 +48,14 @@ export default function Header() {
                 <div className={styles.Naveffect}>
                     <Link to={"./developers"}>Developers
                     </Link></div>
-                <div className={styles.Naveffect}>
+                 {isLoggedIn?(  <div className={styles.Naveffect}>
                     <Link to={"./Resource+Hub"}>Resource Hub
-                    </Link></div>
+                    </Link></div>):  <div className={styles.Naveffect}>
+                    <Link to={"/sign-in"}>Resource Hub
+                    </Link></div>}   
+              
                 </div>
 
-                {/* <div className='pr-4'>
-                <Link to="/" className="flex items-center justify-center ">
-                        <FaUser size={38}/>
-            </Link> */}
-                {/* </div> */}
         {isLoggedIn ? (<div className='pr-4'>
                         <Link to="/profile" className="flex items-center">
                             <FaUser size={38}/>

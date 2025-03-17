@@ -52,8 +52,9 @@ const Utkrishta = () => {
       <div className="message border border-transparent p-5 h-max text-center space-y-6">
         <div className="msgImg flex justify-center items-center">
           <img
-            src="https://i.postimg.cc/ZKtFNMWH/Group-48096103-1.png"
+            src="https://i.postimg.cc/tRvpZQsn/image.png"
             alt="Utkrishta Section"
+            className="h-[80px]"
           />
         </div>
         <Swiper

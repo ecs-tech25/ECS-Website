@@ -1,8 +1,9 @@
 
 
 import { asyncHandler } from "../utils/asyncHandler.js";
-import {APIError} from "../utils/APIError.js"
+import {APIError} from "../utils/APIError.js";
 import { User } from "../models/student.js";
+import { Event } from "../models/Events.js";
 import { uploadOnCloudinary ,deleteFromCloudinary } from "../utils/cloudiary.js";
 import { APIResponse } from "../utils/APIResponse.js";
 import jwt from "jsonwebtoken";
@@ -282,6 +283,77 @@ const updateAvatar=asyncHandler(async(req,res)=>
 const dashboard=asyncHandler(async(req,res)=>{
     return res.status(200).json(new APIResponse(200, req.user,"Current User Details"))
 })
+
+const createEvent = asyncHandler(async (req, res) => {
+    try {
+        const { name, type } = req.body;
+
+        // Check if the event already exists
+        const existingEvent = await Event.findOne({ name });
+        if (existingEvent) {
+            return res.status(400).json({ message: "Event already exists" });
+        }
+
+        const newEvent = new Event({ name, type, participants: [] });
+        await newEvent.save();
+
+        return res.status(201).json({ message: "Event created successfully", event: newEvent });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+
+const registerForEvent = asyncHandler(async (req, res) => {
+    try {
+        const { eventId, studentId, teamName, teamMembers } = req.body;
+
+        // Find the student
+        const student = await User.findById(studentId);
+        if (!student) {
+            return res.status(404).json({ message: "Student not found" });
+        }
+
+        // Find the event
+        const event = await Event.findById(eventId);
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        // Check if student is already registered
+        const isAlreadyRegistered = event.participants.some(p => p.email === student.email);
+        if (isAlreadyRegistered) {
+            return res.status(400).json({ message: "You are already registered for this event" });
+        }
+
+        // Create new participant object
+        const newParticipant = {
+            name: student.fullName,
+            scholar_ID: student.scholar_ID,
+            email: student.email,
+            mobile_No: student.Mobile_No,
+            teamName: teamName || null, // Optional
+            teamMembers: teamMembers || [] // Optional
+        };
+
+        // Add participant to the event
+        event.participants.push(newParticipant);
+        await event.save();
+
+        // Add event to student's profile
+        student.eventsRegistered.push(eventId);
+        await student.save();
+
+        return res.status(201).json({ message: "Registration successful", event, student });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
 export{
     registerUser,
     loginUser,
@@ -290,6 +362,7 @@ export{
     changeCurrentPassword,
     updateAvatar,
     updateAccountDetails,
-    dashboard
-
+    dashboard,
+    createEvent,
+    registerForEvent,
 }
