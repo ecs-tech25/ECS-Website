@@ -26,7 +26,7 @@ export default function QuizApp() {
   const [quizFinished, setQuizFinished] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState("");
   const userName = "John Doe"; // Example username, can be replaced dynamically
-
+  console.log("QuizApp");
   useEffect(() => {
     const calculateTimeLeft = () => {
       const now = new Date();
