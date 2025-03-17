@@ -120,6 +120,9 @@ export default function Header() {
       <li  className={classNames(styles.liItem,{[styles.popNav]:isActive})}>
       <Link to="/Resource+Hub">Resource Hub</Link>
       </li>
+      <li  className={classNames(styles.liItem,{[styles.popNav]:isActive})}>
+      <Link to="SPECTRUM-FIT">Spectrum 11.0</Link>
+      </li>
       {isLoggedIn?
       (<li className={classNames(styles.liItem,{[styles.popNav]:isActive})}>
         <Link to="/profile">

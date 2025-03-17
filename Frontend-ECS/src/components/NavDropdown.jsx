@@ -35,6 +35,9 @@ const NavDropdown = () => {
       <li className={styles.liItem}>
         Resource Hub
       </li>
+      <li className={styles.liItem}>
+        Register for Spectrum 11.0
+      </li>
     </ul>
   </div>
   <div className={styles.dot}></div>
