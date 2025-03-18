@@ -43,7 +43,7 @@ const Message = () => {
       designation: "HOD",
     },
     {
-      image: "https://i.postimg.cc/v8hTtn5V/IMG-20231110-WA0085-jvzm0j.jpg",
+      image: "https://i.postimg.cc/1zw3S8z0/Whats-App-Image-2025-03-17-at-15-15-15-4b509bd9.jpg",
       name: "Aryadeep Gogoi",
       content: "ECS is a thriving and efficient society at NIT Silchar. It is both an honour and a privilege to serve as the President of such an efficient society which is a thriving hub of innovation, creativity, and collaboration, where students from diverse backgrounds come together to explore their passions and expand their horizons. We at ECS strive to holistically develop all students in the department, both technically and non-technically. I urge all students to participate in the clubs and societies to gain valuable experiences and develop time management skills. With teamwork and cooperation, ECS has achieved great heights. We hope to continue our legacy and leave a positive impact on all students in our beloved department. ECE rocks!",
       designation: "PRESIDENT ECS",
@@ -82,11 +82,14 @@ const Message = () => {
             },
           }}
           autoplay={{
-            delay: 3000,  // 3 seconds between each slide transition
-            disableOnInteraction: false, // Keep autoplay running even after user interaction
+            delay: 3000,  
+            disableOnInteraction: false, // Keep autoplay running after interaction
+            pauseOnMouseEnter: true, // Stops autoplay when mouse enters (useful for desktop)
           }}
           loop
           className="rounded-lg !pb-12"
+          onTouchStart={(swiper) => swiper.autoplay.stop()} // Stop autoplay on touch
+          onTouchEnd={(swiper) => swiper.autoplay.start()} // Resume autoplay on touch release
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={index}>
