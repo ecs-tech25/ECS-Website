@@ -13,5 +13,16 @@ const connectDB=async()=>{
     }
 }
 
+// const quizconnectDB=async()=>{
+//     try{
+//         const connectionParameter=await mongoose.connect(`${process.env.ATLAS_URI}/${DB_NAME}`)
+//         console.log(`\nDatabase Connected Successfully!! DB host:${connectionParameter.connection.host}`)
+//     }
+//     catch(error){
+//         console.log("MongoDB Connection Failed",error);
+//         process.exit(1);
+//     }
+// }
+
 
 export default connectDB

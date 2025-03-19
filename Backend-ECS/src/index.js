@@ -18,3 +18,14 @@ connectDB()
     console.log("MongoDB Connection Failed",err)
 
 })
+
+// quizconnectDB()
+// .then(()=>{
+//     app.listen(PORT,()=>{
+//         console.log(`Server Up & Running on Port ${PORT}`);
+//     })
+// })
+// .catch((err)=>{
+//     console.log("quiz MongoDB Connection Failed",err)
+
+// })
