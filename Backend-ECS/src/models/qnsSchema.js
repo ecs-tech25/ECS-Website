@@ -2,15 +2,15 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-// question model
+
 const questionModel = new Schema({
     question: {
         type: String,
-        required: true,  // Ensure every question is provided
+        required: true,  
     },
     answer: {
         type: String,
-        required: true,  // Ensure every answer is provided
+        required: true,  
     },
     createdAt: {
         type: Date,

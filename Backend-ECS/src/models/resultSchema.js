@@ -37,7 +37,7 @@ const resultSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now,
+        default: () => new Date(Date.now() + 5.5 * 60 * 60 * 1000), // GMT+5:30
     }
 });
 
