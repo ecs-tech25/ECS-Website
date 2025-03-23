@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import bgVid from './COS-BG.mp4';
 import './quiz.css';
 import axios from "axios";
+import useSWR from "swr";
 
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
@@ -9,24 +10,32 @@ const Quiz = () => {
   const [score, setScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
   const [userAnswer, setUserAnswer] = useState("");
-  
   const [userAnswers, setUserAnswers] = useState([]);
   const [timeRemaining, setTimeRemaining] = useState("");
-  const userName = "John Doe";
+  const [userName, setUserName] = useState("");
+  const [isQuizStarted, setIsQuizStarted] = useState(false);
 
+  const fetcher = () =>
+    axios.get("http://localhost:7000/api/v1/quiz/leaderboard").then(res => res.data);
+
+  const { data, mutate } = useSWR("scores", fetcher);
+
+  
   useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const response = await axios.get("http://localhost:7000/api/v1/quiz/questions");
-        setQuestions(response.data);
-      } catch (error) {
-        console.error("Error fetching questions:", error);
-      }
-    };
+    if (isQuizStarted) {
+      const fetchQuestions = async () => {
+        try {
+          const response = await axios.get("http://localhost:7000/api/v1/quiz/questions");
+          setQuestions(response.data);
+        } catch (error) {
+          console.error("Error fetching questions:", error);
+        }
+      };
+      fetchQuestions();
+    }
+  }, [isQuizStarted]);
 
-    fetchQuestions();
-  }, []);
-
+  
   useEffect(() => {
     const calculateTimeLeft = () => {
       const now = new Date();
@@ -46,45 +55,15 @@ const Quiz = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleSubmit = () => {
-    if (questions.length === 0) return;
-    
-    const currentQ = questions[currentQuestion];
-   
-    const isCorrect = userAnswer.trim().toLowerCase() === currentQ.answer.toLowerCase();
-
-    
-    const answerData = {
-      questionId: currentQ._id,  
-      userAnswer: userAnswer.trim().toLowerCase(),
-      isCorrect: isCorrect
-    };
-    setUserAnswers(prev => [...prev, answerData]);
-
-    
-    if (isCorrect) {
-      setScore(prevScore => prevScore + 1);
-    }
-
-    setUserAnswer("");
-
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion);
-    } else {
-      setQuizFinished(true);
-    }
-  };
-
   
   const storeResult = async () => {
     try {
       const resultData = {
         username: userName,
         answers: userAnswers,
-        attempts: 1,  
+        attempts: 1,
         points: score,
-        completedAt: new Date().toISOString(), 
+        completedAt: new Date().toISOString(),
       };
       await axios.post("http://localhost:7000/api/v1/quiz/results", resultData);
     } catch (error) {
@@ -92,14 +71,57 @@ const Quiz = () => {
     }
   };
 
+ 
+  const handleSubmit = async () => {
+    if (questions.length === 0) return;
+  
+    const currentQ = questions[currentQuestion];
+    const isCorrect = userAnswer.trim().toLowerCase() === currentQ.answer.toLowerCase();
+  
+    const answerData = {
+      questionId: currentQ._id,
+      userAnswer: userAnswer.trim().toLowerCase(),
+      isCorrect: isCorrect,
+    };
+    setUserAnswers(prev => [...prev, answerData]);
+  
+    
+    const newScore = isCorrect ? score + 1 : score;
+    if (isCorrect) {
+      setScore(newScore);
+    }
+  
+    setUserAnswer("");
+  
+    // Update leaderboard 
+    const leaderBoardData = {
+      userName: userName,
+      score: newScore,
+    };
+    try {
+      await axios.post("http://localhost:7000/api/v1/quiz/leaderboard", leaderBoardData);
+      mutate(); 
+    } catch (error) {
+      console.error("Error updating leaderboard:", error);
+    }
+  
+    const nextQuestion = currentQuestion + 1;
+    if (nextQuestion < questions.length) {
+      setCurrentQuestion(nextQuestion);
+    } else {
+      setQuizFinished(true);
+    }
+  };
+  
+
   
   useEffect(() => {
     if (quizFinished) {
       storeResult();
     }
-    
   }, [quizFinished]);
 
+  
   const restartQuiz = () => {
     setCurrentQuestion(0);
     setScore(0);
@@ -108,17 +130,50 @@ const Quiz = () => {
     setUserAnswers([]);
   };
 
+  
+  const startQuiz = () => {
+    if (userName.trim() !== "") {
+      setIsQuizStarted(true);
+    } else {
+      alert("Please enter your username to start the quiz.");
+    }
+  };
+
+  
+  if (!isQuizStarted) {
+    return (
+      <div className="flex flex-col fixed z-50 w-full min-h-screen items-center justify-center bg-gray-800">
+        <h2 className="text-3xl font-bold mb-4 text-white">Enter Your Username</h2>
+        <input
+          type="text"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          className="p-2 border-2 text-black border-gray-400 rounded mb-4"
+          placeholder="Username"
+        />
+        <button
+          onClick={startQuiz}
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        >
+          Start Quiz
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col fixed z-50 w-full min-h-screen">
+    <div className="flex flex-col gap-2 fixed z-50 w-full min-h-screen">
       <video autoPlay loop muted className="absolute object-cover w-full h-full -z-30" src={bgVid} />
       <div className="userinfo flex justify-around p-10 items-center">
         <div className="username text-5xl font-semibold">{userName}</div>
-        <div className="time-remaining text-3xl font-semibold"> Time Remaining: {timeRemaining}</div>
+        <div className="time-remaining text-3xl font-semibold">Time Remaining: {timeRemaining}</div>
       </div>
-      <div className="module-border-wrap w-2/3 h-2/3 mobile:max-h-fit rounded-lg">
+      <div className="module-border-wrap w-2/3 h-2/3 mobile:max-h-fit rounded-lg mx-auto">
         <div className="bg-indigo-500 shadow-lg p-6 rounded-lg h-full w-full text-center module">
           <div className="flex justify-between text-lg font-bold mb-4">
-            {!quizFinished ? (<span>Question {currentQuestion + 1} / {questions.length}</span>) : null}
+            {!quizFinished ? (
+              <span>Question {currentQuestion + 1} / {questions.length}</span>
+            ) : null}
           </div>
           {quizFinished ? (
             <div>
@@ -152,6 +207,12 @@ const Quiz = () => {
             </div>
           )}
         </div>
+      </div>
+     
+      <div className="border border-red-600 w-[50vw] h-[20vh] mx-auto mt-4">
+        {data && <ul>
+            {data.map(item => <li key={item.userName}>{item.userName} - {item.score}</li>)}
+          </ul>}
       </div>
     </div>
   );

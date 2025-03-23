@@ -16,4 +16,10 @@ router.route('/results')
     .post(controller.storeResult)
     .delete(controller.dropResult);
 
+router.route('/leaderboard')
+    .get(controller.getLeaderBoard)
+    .post(controller.createLeaderBoard)
+    .delete(controller.clearLeaderboard);
+
+
 export default router;

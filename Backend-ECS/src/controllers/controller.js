@@ -1,6 +1,12 @@
 import Question from "../models/qnsSchema.js";
 import Result from "../models/resultSchema.js";
 import { questions } from "../db/data.js";
+import Redis from "ioredis";
+
+
+//redis connection
+
+const redis = new Redis(process.env.REDIS_URL);
 
 // GET Questions
 export async function getQuestions(req, res) {
@@ -78,3 +84,48 @@ export async function dropResult(req, res) {
         res.status(500).json(error);
     }
 }
+
+// CREATE Leaderboard
+export async function createLeaderBoard(req, res) {
+    const { userName, score } = req.body;
+
+    await redis.zadd("scores", score, userName);
+    const rank = await redis.zrevrank("scores", userName);
+
+    console.log(userName, score);
+    res.status(200).json({success: true, rank});
+}
+
+// GET Leaderboard
+export async function getLeaderBoard(req, res) {
+
+    const rawScores = await redis.zrevrange("scores", 0, 10, "WITHSCORES");
+
+    const scores = [];
+
+    for(let i = 0; i< rawScores.length; i+=2){
+        scores.push({
+            userName: rawScores[i],
+            score: parseInt(rawScores[i+1], 10)
+        })
+    }
+
+    console.log(rawScores);
+
+
+
+    res.status(200).json(scores);
+}
+
+//clear leaderboard
+export async function clearLeaderboard(req, res) {
+    try {
+      await redis.flushdb();
+      res.status(200).json({ msg: "Leaderboard cleared successfully" });
+    } catch (error) {
+      console.error("Error clearing leaderboard:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+  
+
