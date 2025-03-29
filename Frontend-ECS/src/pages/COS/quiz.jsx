@@ -216,7 +216,7 @@ const Quiz = () => {
   // Start quiz manually after team name entry: Allow starting only if within quiz window.
   const startQuiz = () => {
     if (!quizAllowed) {
-      alert(`Quiz can only be started after ${startTime}`);
+      alert("Quiz can only be attempted after 10:30pm");
       return;
     }
     if (teamName.trim() && !hasAttempted) {
