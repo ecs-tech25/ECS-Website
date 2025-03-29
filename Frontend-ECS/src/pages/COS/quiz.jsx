@@ -29,7 +29,7 @@ const Quiz = () => {
   // SWR for leaderboard
   const fetcher = () =>
     axios
-      .get("https://ecs-website.onrender.com/api/v1/quiz/leaderboard", {
+      .get("/api/v1/quiz/leaderboard", {
         headers: { Authorization: `Bearer ${localStorage.getItem("accesstoken")}` },
       })
       .then((res) => res.data);
@@ -92,7 +92,7 @@ const Quiz = () => {
     if (isLoggedIn && isQuizStarted && questions.length === 0) {
       const fetchQuestions = async () => {
         try {
-          const response = await axios.get("https://ecs-website.onrender.com/api/v1/quiz/questions", {
+          const response = await axios.get("/api/v1/quiz/questions", {
             headers: { Authorization: `Bearer ${localStorage.getItem("accesstoken")}` },
           });
           setQuestions(response.data);
@@ -142,13 +142,13 @@ const Quiz = () => {
         now.getFullYear(),
         now.getMonth(),
         now.getDate(),
-        22, 30, 0
+        22, 25, 0
       );
       const endTime = new Date(
         now.getFullYear(),
         now.getMonth(),
-        now.getDate()+1,
-        23, 30, 0
+        now.getDate()+100,
+        22, 48, 0
       );
 
       if (now < startTime) {
@@ -263,7 +263,7 @@ const Quiz = () => {
 
       try {
         await axios.post(
-          "https://ecs-website.onrender.com/api/v1/quiz/leaderboard",
+          "/api/v1/quiz/leaderboard",
           { userName: teamName, score: newScore },
           { headers: { Authorization: `Bearer ${localStorage.getItem("accesstoken")}` } }
         );
@@ -392,9 +392,9 @@ const Quiz = () => {
           <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 animate-pulse">
             {teamName}
           </h1>
-          <div className="text-2xl font-semibold text-blue-400">
+          {/* <div className="text-2xl font-semibold text-blue-400">
             Time Remaining: <span className="text-purple-400">{timeRemaining}</span>
-          </div>
+          </div> */}
         </header>
 
         <div className="flex gap-6">
