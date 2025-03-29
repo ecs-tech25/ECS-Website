@@ -18,10 +18,10 @@ export default function Home() {
 
       // Define quiz start and end times:
       const startTime = new Date();
-      startTime.setHours(22, 0, 0, 0); // Quiz starts at 7:40 PM
+      startTime.setHours(22, 30, 0, 0); // Quiz starts at 10:30 PM
       const endTime = new Date();
      // endTime.setDate(endTime.getDate()); // Move to the next day
-      endTime.setHours(23, 0, 0, 0); // Set time to 00:00:00
+      endTime.setHours(23, 30, 0, 0); // Set time to 11:30pm
 
       if (now < startTime) {
         // Before quiz starts: disable button and show countdown until start.
