@@ -20,7 +20,7 @@ export default function Home() {
       const startTime = new Date();
       startTime.setHours(22, 0, 0, 0); // Quiz starts at 7:40 PM
       const endTime = new Date();
-      endTime.setDate(endTime.getDate()); // Move to the next day
+     // endTime.setDate(endTime.getDate()); // Move to the next day
       endTime.setHours(23, 0, 0, 0); // Set time to 00:00:00
 
       if (now < startTime) {
