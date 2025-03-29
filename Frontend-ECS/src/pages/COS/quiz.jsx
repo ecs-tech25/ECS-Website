@@ -142,7 +142,7 @@ const Quiz = () => {
         now.getFullYear(),
         now.getMonth(),
         now.getDate(),
-        22, 25, 0
+        0, 0, 0
       );
       const endTime = new Date(
         now.getFullYear(),
